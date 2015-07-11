@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.wku.mandi</groupId>
-    <artifactId>madi-api</artifactId>
+    <artifactId>mandi-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>madi-api</name>
+    <name>mandi-api</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -163,7 +163,7 @@
     </dependencies>
 
     <build>
-        <finalName>MandyService</finalName>
+        <finalName>MandiService</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
