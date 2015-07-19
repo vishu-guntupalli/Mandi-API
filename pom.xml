@@ -13,9 +13,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>1.7</jdk.version>
-        <spring.version>3.2.2.RELEASE</spring.version>
+        <spring.version>4.1.4.RELEASE</spring.version>
         <mongojavadriver.version>2.11.1</mongojavadriver.version>
-        <springdata.version>1.2.1.RELEASE</springdata.version>
+        <springdata.version>1.7.1.RELEASE</springdata.version>
+        <springTest.version>4.1.4.RELEASE</springTest.version>
     </properties>
 
     <repositories>
@@ -29,54 +30,38 @@
 
     <dependencies>
 
-        <!-- JUnit test lib -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.4</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- servlet jar file -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- aspectj -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.6.11</version>
-        </dependency>
-
-        <!-- slf4j-bridge for commons-logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.1</version>
-        </dependency>
+        <!--
+      ##########################################################################
+      ####################       Mongo DB Dependencies       ####################
+      ##########################################################################
+      -->
 
         <!-- Spring Data for MongoDB -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
             <version>${springdata.version}</version>
+            <exclusions>
+               <exclusion>
+                  <groupId>org.springframework</groupId>
+		          <artifactId>spring-expression</artifactId>
+               </exclusion>
+            </exclusions>
         </dependency>
-
-
+        
+         <!-- Java MongoDB Driver -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>${mongojavadriver.version}</version>
+        </dependency>
+        
+        <!--
+      ##########################################################################
+      ####################       Spring Dependencies       ####################
+      ##########################################################################
+      -->
+        
         <!-- Spring Core -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -93,20 +78,22 @@
             <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
-        <!-- need this for @Configuration -->
         <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>2.2.2</version>
-        </dependency>
+		   <groupId>org.springframework</groupId>
+		   <artifactId>spring-beans</artifactId>
+		   <version>${spring.version}</version>
+		</dependency>   
+		<dependency>
+		   <groupId>org.springframework</groupId>
+		   <artifactId>spring-expression</artifactId>
+		   <version>${spring.version}</version>
+		</dependency>     
 
-        <!-- Java MongoDB Driver -->
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>${mongojavadriver.version}</version>
-        </dependency>
+        <!--
+      ##########################################################################
+      ####################       Jersey Dependencies       ####################
+      ##########################################################################
+      -->
 
         <!-- Jersey -->
         <dependency>
@@ -159,6 +146,102 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        
+        <!--
+      ##########################################################################
+      ####################       Logging Dependencies       ####################
+      ##########################################################################
+      -->
+        
+        <!-- slf4j-bridge for commons-logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+        
+        <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.15</version>
+          <exclusions>
+             <exclusion>
+                <artifactId>mail</artifactId>
+                <groupId>javax.mail</groupId>
+              </exclusion>
+              <exclusion>
+                <artifactId>jms</artifactId>
+                <groupId>javax.jms</groupId>
+              </exclusion>
+              <exclusion>
+                <artifactId>jmxtools</artifactId>
+                <groupId>com.sun.jdmk</groupId>
+              </exclusion>
+              <exclusion>
+                <artifactId>jmxri</artifactId>
+                <groupId>com.sun.jmx</groupId>
+              </exclusion>
+            </exclusions>
+         </dependency>
+         
+         <!--
+      ##########################################################################
+      ####################       Misc. Dependencies       ####################
+      ##########################################################################
+      -->
+         
+         <!-- servlet jar file -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- aspectj -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.6.11</version>
+        </dependency>
+        
+        <!-- need this for @Configuration -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+         
+         <!--
+      ##########################################################################
+      ####################       Unit Testing Dependencies       ####################
+      ##########################################################################
+      -->
+        
+         <!-- JUnit test lib -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.9</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Spring Test Dependency -->
+        <dependency>
+           <groupId>org.springframework</groupId>
+           <artifactId>spring-test</artifactId>
+           <version>${springTest.version}</version>
+        </dependency>
 
     </dependencies>
 
@@ -173,5 +256,23 @@
                 </configuration>
             </plugin>
         </plugins>
+        
+      <testResources>
+         <testResource>
+            <directory>src/test/resources</directory>
+            <filtering>true</filtering>
+         </testResource>
+      </testResources>
+      
+      <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>**/*.properties</include>
+                <include>**/*.xml</include>
+            </includes>
+        </resource>
+    </resources>
+    
     </build>
 </project>
