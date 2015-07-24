@@ -42,11 +42,17 @@ public class UserDaoImpl implements UserDao{
 		mongoTemplate.save(user);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.wku.mandi.dao.UserDao#findUsersWithNameLike(java.lang.String)
+	 * Retrieve a list of users depending on firstName or lastName like, case insensitive
+	 */
 	@Override
 	public List<User> findUsersWithNameLike(String nameLike) {
-		Pattern namePattern = Pattern.compile("^\\w+"+nameLike+"\\w+", Pattern.CASE_INSENSITIVE);
-		Query query = new Query(Criteria.where("firstName").regex(namePattern).orOperator
-				               (Criteria.where("lastName").regex(namePattern)));
+		Pattern namePattern = Pattern.compile("\\w*"+nameLike+"\\w*", Pattern.CASE_INSENSITIVE);
+		Criteria criteria = new Criteria().orOperator(Criteria.where("firstName").regex(namePattern),
+				                                      Criteria.where("lastName").regex(namePattern));
+		Query query = new Query(criteria);
 		
 		ArrayList<User> users = (ArrayList<User>) mongoTemplate.find(query, User.class);
 		return users;

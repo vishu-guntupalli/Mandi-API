@@ -55,10 +55,17 @@ public class TestUserDaoImpl {
 	
 	@Test
 	public void testFindUsersNameLike() {
-		List<User> userList = userDaoImpl.findUsersWithNameLike("John");
+		List<User> userList = userDaoImpl.findUsersWithNameLike("john");
 		
 		Assert.assertNotNull(userList);
 		Assert.assertEquals(1, userList.size());
+		
+		User actualUser = userList.get(0);
+		
+		Assert.assertEquals(fakeUser.getFirstName(), actualUser.getFirstName());
+		Assert.assertEquals(fakeUser.getLastName(), actualUser.getLastName());
+		Assert.assertEquals(fakeUser.getSex(), actualUser.getSex());
+		Assert.assertEquals(fakeUser.getUserId(), actualUser.getUserId());
 	}
 	
 
