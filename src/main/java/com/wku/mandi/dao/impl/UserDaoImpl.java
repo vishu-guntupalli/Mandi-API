@@ -58,6 +58,11 @@ public class UserDaoImpl implements UserDao{
 		return users;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.wku.mandi.dao.UserDao#deleteUser(java.lang.String)
+	 * Deletes a user, given the unique user ID
+	 */
 	@Override
 	public void deleteUser(String id) {
 		Query query = new Query(Criteria.where("_id").is(id));
