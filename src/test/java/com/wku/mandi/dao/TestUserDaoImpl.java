@@ -1,7 +1,10 @@
 package com.wku.mandi.dao;
 
+import java.util.List;
+
 import junit.framework.Assert;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,12 +33,17 @@ public class TestUserDaoImpl {
 		fakeUser.setLastName("Doe");
 		fakeUser.setSex("M");
 		fakeUser.setUserId(JOHN_DOE);
+		
+		userDaoImpl.saveUser(fakeUser);
+	}
+	
+	@After
+	public void tearDown() {
+		userDaoImpl.deleteUser(JOHN_DOE);
 	}
 	
 	@Test
 	public void testSaveUserandRetrieve() {
-		userDaoImpl.saveUser(fakeUser);
-		
 		User actualuser = userDaoImpl.findUserById(JOHN_DOE);
 		
 		Assert.assertNotNull(actualuser);
@@ -44,5 +52,14 @@ public class TestUserDaoImpl {
 		Assert.assertEquals(fakeUser.getSex(), actualuser.getSex());
 		Assert.assertEquals(fakeUser.getUserId(), actualuser.getUserId());
 	}
+	
+	@Test
+	public void testFindUsersNameLike() {
+		List<User> userList = userDaoImpl.findUsersWithNameLike("John");
+		
+		Assert.assertNotNull(userList);
+		Assert.assertEquals(1, userList.size());
+	}
+	
 
 }
