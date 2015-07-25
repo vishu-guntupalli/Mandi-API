@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -15,6 +17,8 @@ import com.wku.mandi.db.User;
 
 @Repository
 public class UserDaoImpl implements UserDao{
+	
+	Log log = LogFactory.getLog(UserDaoImpl.class);
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -28,6 +32,7 @@ public class UserDaoImpl implements UserDao{
 	public User findUserById(String id) {
 		Query query = new Query(Criteria.where("_id").is(id));
 		
+		log.debug("Finding the user by userID "+ id);
 		User user = (User) mongoTemplate.findOne(query, User.class);
 		return user;
 	}
@@ -39,6 +44,7 @@ public class UserDaoImpl implements UserDao{
 	 */
 	@Override
 	public void saveUser(User user) {
+		log.debug("Saving the user "+user);
 		mongoTemplate.save(user);
 	}
 	
@@ -54,6 +60,7 @@ public class UserDaoImpl implements UserDao{
 				                                      Criteria.where("lastName").regex(namePattern));
 		Query query = new Query(criteria);
 		
+		log.debug("Finding user with name like "+nameLike);
 		ArrayList<User> users = (ArrayList<User>) mongoTemplate.find(query, User.class);
 		return users;
 	}
@@ -67,6 +74,7 @@ public class UserDaoImpl implements UserDao{
 	public void deleteUser(String id) {
 		Query query = new Query(Criteria.where("_id").is(id));
 		
+		log.debug("Deleting the user with ID "+id);
 		mongoTemplate.remove(query, User.class);
 	}
 
