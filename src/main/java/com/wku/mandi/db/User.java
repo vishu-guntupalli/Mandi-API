@@ -1,5 +1,7 @@
 package com.wku.mandi.db;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +13,7 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String sex;
+	private List<Address> addresses;
 	
 	public String getUserId() {
 		return userId;
@@ -42,6 +45,14 @@ public class User {
 	
 	public void setSex(String sex) {
 		this.sex = sex;
+	}
+
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
 	}
 
 }

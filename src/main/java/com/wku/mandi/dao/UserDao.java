@@ -8,9 +8,9 @@ public interface UserDao {
 	
 	public User findUserById(String id);
 	
-	public void saveUser(User user);
-	
 	public List<User> findUsersWithNameLike(String nameLike);
+	
+	public void saveUser(User user);
 	
 	public void deleteUser(String id);
 	
