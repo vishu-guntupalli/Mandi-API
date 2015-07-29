@@ -71,11 +71,11 @@ public class UserDaoImpl implements UserDao{
 	 * Deletes a user, given the unique user ID
 	 */
 	@Override
-	public void deleteUser(String id) {
+	public User deleteUser(String id) {
 		Query query = new Query(Criteria.where("_id").is(id));
 		
 		log.debug("Deleting the user with ID "+id);
-		mongoTemplate.remove(query, User.class);
+		return mongoTemplate.findAndRemove(query,User.class);
 	}
 
 	public MongoTemplate getMongoOperations() {

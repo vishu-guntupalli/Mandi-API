@@ -1,30 +1,54 @@
 package com.wku.mandi.controller;
 
+import com.wku.mandi.db.User;
 import com.wku.mandi.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by srujangopu on 7/5/15.
  */
 
-@Controller
-@Path("/profile")
+@RestController
+@RequestMapping("/profile")
 public class ProfileController {
 
-    @Autowired
-    @Qualifier("ProfileService")
-    private ProfileService profileService;
+    private final ProfileService profileService;
 
-    @GET
-    @Path("/hello")
+    @Autowired
+    ProfileController(ProfileService profileService) {
+        this.profileService = profileService;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
     public String getHello()
     {
         return "Hello World";
+    }
+
+    @RequestMapping(method=RequestMethod.GET, value = "/{id}")
+    public @ResponseBody
+    User getProfile(@PathVariable String id) {
+        return profileService.findUserById(id);
+    }
+
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public ResponseEntity<User> save(@RequestBody User user) {
+
+        if (user != null) {
+            profileService.saveUser(user);
+        }
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<User> delete(@PathVariable String id) {
+
+        User user = profileService.deleteUser(id);
+
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
 }

@@ -2,26 +2,21 @@ package com.wku.mandi.dao;
 
 import java.util.Arrays;
 import java.util.List;
-
-import junit.framework.Assert;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import com.wku.mandi.dao.impl.UserDaoImpl;
 import com.wku.mandi.db.Address;
 import com.wku.mandi.db.User;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:applicationContext.xml")
+@RunWith(MockitoJUnitRunner.class)
 public class TestUserDaoImpl {
 
-	@Autowired
+	@Mock
 	private UserDaoImpl userDaoImpl;
 	
 	private User fakeUser = new User();
@@ -102,3 +97,4 @@ public class TestUserDaoImpl {
 		Assert.assertEquals(1, actualuser.getAddresses().size());
 	}
 }
+
