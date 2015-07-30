@@ -1,16 +1,14 @@
 package com.wku.mandi.aspect;
-
+/*
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Aspect;*/
 
-import java.util.Arrays;
-
-@Aspect
+/*@Aspect*/
 public class MandiServiceAspectLogging {
 	
-	private static final Logger log = Logger.getLogger(MandiServiceAspectLogging.class);
+	/*private static final Logger log = Logger.getLogger(MandiServiceAspectLogging.class);
 	
 	@Around("execution(* com.wku.mandi.*.*(..))")
 	   public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -30,6 +28,6 @@ public class MandiServiceAspectLogging {
         log.info("APILoggingAspect After method name: " + joinPoint.getSignature().getName() + " in time " + (endtime-begintime) + "ms");
         log.info("-------------------------------------------------------------------------------" );
         return result;
-	   }
+	   }*/
 
 }
