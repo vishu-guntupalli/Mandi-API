@@ -107,6 +107,22 @@
             <scope>test</scope>
         </dependency>
 
+        <!--
+      ##########################################################################
+      ####################       Rest Service API Dependencies       ####################
+      ##########################################################################-->
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.2</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

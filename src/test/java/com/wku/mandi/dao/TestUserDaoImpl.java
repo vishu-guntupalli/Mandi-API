@@ -2,6 +2,8 @@ package com.wku.mandi.dao;
 
 import java.util.Arrays;
 import java.util.List;
+
+import com.wku.mandi.SpringBoot;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,12 +14,19 @@ import com.wku.mandi.db.Address;
 import com.wku.mandi.db.User;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = SpringBoot.class)
+@WebAppConfiguration
 public class TestUserDaoImpl {
 
-	@Mock
+	@Autowired
 	private UserDaoImpl userDaoImpl;
+
 	
 	private User fakeUser = new User();
 	private Address homeAddress = new Address();

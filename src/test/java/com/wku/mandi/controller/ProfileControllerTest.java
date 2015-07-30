@@ -1,5 +1,6 @@
 package com.wku.mandi.controller;
 
+import com.wku.mandi.SpringBoot;
 import com.wku.mandi.db.Address;
 import com.wku.mandi.db.User;
 import com.wku.mandi.service.ProfileService;
@@ -8,7 +9,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -30,7 +35,9 @@ import static org.hamcrest.Matchers.is;
  * Created by srujangopu on 7/28/15.
  */
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = SpringBoot.class)
+@WebAppConfiguration
 public class ProfileControllerTest {
 
     private static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -38,7 +45,7 @@ public class ProfileControllerTest {
             Charset.forName("utf8")
     );
 
-    @Mock
+    @Autowired
     private ProfileService profileService;
 
     private MockMvc mockMvc;
@@ -81,11 +88,8 @@ public class ProfileControllerTest {
     @Test
     public void findUser() throws Exception{
 
-
         mockMvc.perform(get("/profile/{id}", JOHN_DOE))
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(JOHN_DOE)));
+                .andExpect(status().isOk());
     }
 
 
@@ -99,7 +103,14 @@ public class ProfileControllerTest {
         injectHomeAddress();
 
         mockMvc.perform(delete("/profile/{id}", JOHN_DOE))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void validateFetchAddressService() throws Exception{
+
+        mockMvc.perform(get("/profile/address/{zipCode}", "42101"))
+                .andExpect(jsonPath("$.country", is("United States")));
     }
 
     private void injectHomeAddress() {
