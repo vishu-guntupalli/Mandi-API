@@ -6,6 +6,8 @@
     <groupId>com.wku.mandi</groupId>
     <artifactId>mandi-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    
+    <name>mandi-api</name>
 
     <properties>
         <!-- Enable Java 8 -->
@@ -121,6 +123,19 @@
             <artifactId>lombok</artifactId>
             <version>1.16.2</version>
             <scope>provided</scope>
+        </dependency>
+        
+        <!-- Dependencies for WADL generation -->
+        <dependency>
+           <groupId>org.jvnet.ws.wadl</groupId>
+           <artifactId>wadl-core</artifactId>
+           <version>1.1.6</version>
+        </dependency> 
+        
+        <dependency>
+           <groupId>org.jvnet.ws.wadl</groupId>
+           <artifactId>wadl-client-plugin</artifactId>
+           <version>1.1.6</version>
         </dependency>
 
     </dependencies>
