@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
-
+	
     private final ProfileService profileService;
 
     @Autowired
@@ -24,19 +24,19 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, value = "/hello", produces={"application/json"})
     public String getHello()
     {
         return "Hello World";
     }
 
-    @RequestMapping(method=RequestMethod.GET, value = "/{id}")
+    @RequestMapping(method=RequestMethod.GET, value = "/{id}", produces={"application/json"})
     public @ResponseBody User getProfile(@PathVariable String id) {
 
         return profileService.findUserById(id);
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, value = "/save", produces={"application/json"})
     public ResponseEntity<User> save(@RequestBody User user) {
         if (user != null) {
             profileService.saveUser(user);
@@ -44,14 +44,14 @@ public class ProfileController {
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}", produces={"application/json"})
     public ResponseEntity<User> delete(@PathVariable String id) {
 
         User user = profileService.deleteUser(id);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    @RequestMapping(method=RequestMethod.GET, value = "/address/{zipCode}")
+    @RequestMapping(method=RequestMethod.GET, value = "/address/{zipCode}", produces={"application/json"})
     public @ResponseBody ZipCodeResponse getAddressDetails(@PathVariable String zipCode) {
 
         return profileService.getAddressDetails(zipCode);

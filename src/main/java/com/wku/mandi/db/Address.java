@@ -6,38 +6,57 @@ public class Address {
 	private String addressLine2;
 	private String city;
 	private String state;
-	private int zipCode;
+	private String zipCode;
+	private String longitude;
+	private String latitude;
 	private String type;
-	
+
 	public String getAddressLine1() {
 		return addressLine1;
 	}
-	
+
 	public void setAddressLine1(String addressLine1) {
 		this.addressLine1 = addressLine1;
 	}
-	
+
 	public String getCity() {
 		return city;
 	}
-	
+
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
+
 	public String getState() {
 		return state;
 	}
-	
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
 	public void setState(String state) {
 		this.state = state;
+
 	}
-	
-	public int getZipCode() {
+
+	public String getZipCode() {
 		return zipCode;
 	}
-	
-	public void setZipCode(int zipCode) {
+
+	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
 
