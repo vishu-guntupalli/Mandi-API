@@ -1,14 +1,18 @@
 package com.wku.mandi.controller;
 
-import com.wku.mandi.SpringBoot;
-import com.wku.mandi.db.Address;
-import com.wku.mandi.db.User;
-import com.wku.mandi.service.ProfileService;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.nio.charset.Charset;
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
@@ -17,18 +21,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.nio.charset.Charset;
-import java.util.Arrays;
+import com.wku.mandi.SpringBoot;
+import com.wku.mandi.db.Address;
+import com.wku.mandi.db.User;
+import com.wku.mandi.service.ProfileService;
 import com.wku.mandi.util.WebTestUtil;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 
 
 /**
@@ -63,7 +60,7 @@ public class ProfileControllerTest {
 
     @Test
     public void testAPI() throws Exception{
-        mockMvc.perform(get("/profile"))
+        mockMvc.perform(get("/profile/hello"))
                 .andExpect(status().isOk());
     }
 
@@ -118,7 +115,7 @@ public class ProfileControllerTest {
         homeAddress.setAddressLine2("Apartment 1");
         homeAddress.setCity("Nashville");
         homeAddress.setState("TN");
-        homeAddress.setZipCode(37027);
+        homeAddress.setZipCode("37027");
         homeAddress.setType("Home");
 
         fakeUser.setAddresses(Arrays.asList(homeAddress));

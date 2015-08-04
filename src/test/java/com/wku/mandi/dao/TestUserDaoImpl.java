@@ -3,21 +3,20 @@ package com.wku.mandi.dao;
 import java.util.Arrays;
 import java.util.List;
 
-import com.wku.mandi.SpringBoot;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import com.wku.mandi.dao.impl.UserDaoImpl;
-import com.wku.mandi.db.Address;
-import com.wku.mandi.db.User;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import com.wku.mandi.SpringBoot;
+import com.wku.mandi.dao.impl.UserDaoImpl;
+import com.wku.mandi.db.Address;
+import com.wku.mandi.db.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SpringBoot.class)
@@ -81,7 +80,7 @@ public class TestUserDaoImpl {
 		homeAddress.setAddressLine2("Apartment 1");
 		homeAddress.setCity("Nashville");
 		homeAddress.setState("TN");
-		homeAddress.setZipCode(37027);
+		homeAddress.setZipCode("37027");
 		homeAddress.setType("Home");
 		
 		fakeUser.setAddresses(Arrays.asList(homeAddress));
