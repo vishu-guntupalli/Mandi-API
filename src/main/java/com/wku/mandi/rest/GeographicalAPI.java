@@ -1,6 +1,5 @@
 package com.wku.mandi.rest;
 
-import com.wku.mandi.db.Address;
 import com.wku.mandi.rest.response.GeospatialAPIResponse;
 import org.springframework.stereotype.Component;
 

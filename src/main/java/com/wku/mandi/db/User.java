@@ -1,15 +1,18 @@
 package com.wku.mandi.db;
 
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document
 public class User {
 	
 	@Id
 	private String userId;
+	private String password;
+	private List<Role> roles;
 	private String firstName;
 	private String lastName;
 	private String sex;
@@ -21,6 +24,24 @@ public class User {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	@JsonIgnore
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@JsonIgnore
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	public String getFirstName() {

@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -63,6 +64,10 @@ public class ProfileServiceImpl implements ProfileService{
 
             if(geospatialAPIResponse != null){
                 getLatitudeLongitude(address, geospatialAPIResponse);
+                double latitude = new BigDecimal(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLat()).doubleValue();
+                double longitude = new BigDecimal(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLng()).doubleValue();
+                double[] location = {latitude,longitude};
+                address.setLocation(location);
             }
         }
         userDao.saveUser(user);
@@ -70,14 +75,22 @@ public class ProfileServiceImpl implements ProfileService{
     
     // @TODO: Investigate a better way to extract latitude and longitude 
 	private void getLatitudeLongitude(Address address, GeospatialAPIResponse geospatialAPIResponse) {
-	   try{ 
-		address.setLatitude(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLat());
-		address.setLongitude(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLng());
+	   try{
+
+        double[] location = {new Double(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLat()),
+                             new Double(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLng())
+                            };
+		address.setLocation(location);
 	   }
 	   catch(NullPointerException exception) {
 		   log.error("Got exception while extracting Latitude and longitude ", exception);
 	   }
 	}
+
+    @Override
+    public void updateUser(User user) {
+
+    }
 
     @Override
     public User deleteUser(String id) {
@@ -87,6 +100,16 @@ public class ProfileServiceImpl implements ProfileService{
     @Override
     public ZipCodeResponse getAddressDetails(String zipCode) {
         return zipcodeRestAPI.getAddressDetails(zipCode);
+    }
+
+    @Override
+    public List<User> searchResults(String zipCode, int distance) {
+
+        ZipCodeResponse zipCodeResponse = this.zipcodeRestAPI.getAddressDetails(zipCode);
+        double latitude = new BigDecimal(zipCodeResponse.getPlaces().get(0).getLatitude()).doubleValue();
+        double longitude = new BigDecimal(zipCodeResponse.getPlaces().get(0).getLongitude()).doubleValue();
+        double[] location = {latitude,longitude};
+        return this.userDao.getSearchResults(location,distance);
     }
 
 
