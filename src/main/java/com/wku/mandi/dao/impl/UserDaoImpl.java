@@ -1,19 +1,21 @@
 package com.wku.mandi.dao.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
+import com.wku.mandi.dao.UserDao;
+import com.wku.mandi.db.Address;
+import com.wku.mandi.db.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.wku.mandi.dao.UserDao;
-import com.wku.mandi.db.User;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 @Repository
 public class UserDaoImpl implements UserDao{
@@ -39,7 +41,7 @@ public class UserDaoImpl implements UserDao{
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.wku.mandi.dao.UserDao#saveUser(com.wku.mandi.db.User)
+	 * @see com.wku.mandi.dao.UserDao#saveUser(User)
 	 * Saves a User to the database.
 	 */
 	@Override
@@ -47,7 +49,13 @@ public class UserDaoImpl implements UserDao{
 		log.debug("Saving the user "+user);
 		mongoTemplate.save(user);
 	}
-	
+
+	@Override
+	public void updateUser(User user) {
+		log.debug("Updating the user " + user);
+		//mongoTemplate.modi(user);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.wku.mandi.dao.UserDao#findUsersWithNameLike(java.lang.String)
@@ -76,6 +84,19 @@ public class UserDaoImpl implements UserDao{
 		
 		log.debug("Deleting the user with ID "+id);
 		return mongoTemplate.findAndRemove(query,User.class);
+	}
+
+	@Override
+	public List<User> getSearchResults(double[] loc, int distance) {
+		Point location = new Point(loc[0],loc[1]);
+		NearQuery query = NearQuery.near(location).maxDistance(new Distance(distance, Metrics.MILES));
+		//GeoResults<User> results = mongoTemplate.geoNear(query, User.class);
+		GeoResults<User> results = mongoTemplate.geoNear(query, User.class);
+		List<User> response = new ArrayList<>();
+		/*for(GeoResult<User>  eachUser : results.getContent()){
+			response.add(eachUser.getContent());
+		}*/
+		return  response;
 	}
 
 	public MongoTemplate getMongoOperations() {

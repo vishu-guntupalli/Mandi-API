@@ -16,7 +16,11 @@ public interface ProfileService {
 
     public void saveUser(User user);
 
+    public void updateUser(User user);
+
     public User deleteUser(String id);
 
     public ZipCodeResponse getAddressDetails(String zipCode);
+
+    public List<User> searchResults(String zipCode, int distance);
 }
