@@ -4,10 +4,6 @@ package com.wku.mandi.dao;
 import java.util.Arrays;
 import java.util.List;
 
-import com.wku.mandi.SpringBoot;
-import com.wku.mandi.dao.impl.UserDaoImpl;
-import com.wku.mandi.db.Address;
-import com.wku.mandi.db.User;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,9 +18,6 @@ import com.wku.mandi.SpringBoot;
 import com.wku.mandi.dao.impl.UserDaoImpl;
 import com.wku.mandi.db.Address;
 import com.wku.mandi.db.User;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
