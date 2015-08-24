@@ -1,4 +1,4 @@
-/*
+
 package com.wku.mandi.controller;
 
 import java.lang.annotation.Annotation;
@@ -192,4 +192,4 @@ public class WadlController {
         value = value.replaceAll("\n", "");
         return value;
     }
-}*/
+}

@@ -1,0 +1,51 @@
+[
+   {
+      "_id" : "user1",
+      "password" : "user1Password",
+      "roles" : ["seller"],
+      "firstName" : "user",
+      "lastName" : "one",
+      "sex" : "M",
+      "addresses" : [ 
+                     {
+                        "addressLine1" : "402 Brick Path Lane",
+			    		"addressLine2" : "Apt 306",
+						"city" : "Franklin",
+						"state" : "TN",
+						"zipCode" : "37064",
+						"location" : { 
+						                 "lat": 35.9310461,
+                                         "lng": -86.8556036
+                                      },
+						"type" : "Home"
+                     }
+                  ]
+
+   },
+   {
+      "_id" : "user2",
+      "password" : "user2Password",
+      "roles" : ["seller"],
+      "firstName" : "user",
+      "lastName" : "two",
+      "sex" : "F",
+      "addresses" : [ 
+                     {
+                        "addressLine1" : "2102 Hourglass Ct",
+			    		"addressLine2" : " ",
+						"city" : "Franklin",
+						"state" : "TN",
+						"zipCode" : "37067",
+						"location" : { 
+						                 "lat": 35.9462032,
+                                         "lng": -86.83684400000001
+                                      },
+						"type" : "Home"
+                     }
+                  ]
+
+   }
+
+   
+
+]
