@@ -77,12 +77,31 @@ public class TestUserDaoImpl {
 		Assert.assertEquals(fakeUser.getUserId(), actualUser.getUserId());
 	}
 	
+	@Test
+	public void testGetSearchNear() {
+		double loc[] = {-86.8556036, 35.9462032};
+		
+		List<User> searchResults = userDaoImpl.getSearchResults(loc, 10);
+		Assert.assertNotNull(searchResults);
+		Assert.assertEquals(1, searchResults.size());
+		
+		User actualUser = searchResults.get(0);
+        compareUserData(actualUser);
+		
+		Address actualAddress = actualUser.getAddresses().get(0);
+		
+		compareAddressData(actualAddress);
+	}
+	
 	private void injectHomeAddress() {
+		double loc[] = {-86.8556036, 35.9462032};
+		
 		homeAddress.setAddressLine1("123 Some Street");
 		homeAddress.setAddressLine2("Apartment 1");
 		homeAddress.setCity("Nashville");
 		homeAddress.setState("TN");
 		homeAddress.setZipCode("37027");
+		homeAddress.setLocation(loc);
 		homeAddress.setType("Home");
 		
 		fakeUser.setAddresses(Arrays.asList(homeAddress));

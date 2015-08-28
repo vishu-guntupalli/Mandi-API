@@ -1,5 +1,6 @@
 package com.wku.mandi.db;
 
+
 public class Address {
 	
 	private String addressLine1;

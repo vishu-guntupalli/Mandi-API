@@ -90,12 +90,11 @@ public class UserDaoImpl implements UserDao{
 	public List<User> getSearchResults(double[] loc, int distance) {
 		Point location = new Point(loc[0],loc[1]);
 		NearQuery query = NearQuery.near(location).maxDistance(new Distance(distance, Metrics.MILES));
-		//GeoResults<User> results = mongoTemplate.geoNear(query, User.class);
 		GeoResults<User> results = mongoTemplate.geoNear(query, User.class);
 		List<User> response = new ArrayList<>();
-		/*for(GeoResult<User>  eachUser : results.getContent()){
+		for(GeoResult<User>  eachUser : results.getContent()){
 			response.add(eachUser.getContent());
-		}*/
+		}
 		return  response;
 	}
 

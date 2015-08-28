@@ -64,10 +64,6 @@ public class ProfileServiceImpl implements ProfileService{
 
             if(geospatialAPIResponse != null){
                 getLatitudeLongitude(address, geospatialAPIResponse);
-                double latitude = new BigDecimal(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLat()).doubleValue();
-                double longitude = new BigDecimal(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLng()).doubleValue();
-                double[] location = {latitude,longitude};
-                address.setLocation(location);
             }
         }
         userDao.saveUser(user);
@@ -77,10 +73,11 @@ public class ProfileServiceImpl implements ProfileService{
 	private void getLatitudeLongitude(Address address, GeospatialAPIResponse geospatialAPIResponse) {
 	   try{
 
-        double[] location = {new Double(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLat()),
-                             new Double(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLng())
-                            };
-		address.setLocation(location);
+		   double latitude = new BigDecimal(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLat()).doubleValue();
+           double longitude = new BigDecimal(geospatialAPIResponse.getResults().get(0).getGeometry().getLocation().getLng()).doubleValue();
+           double[] location = {longitude, latitude};
+           
+           address.setLocation(location);
 	   }
 	   catch(NullPointerException exception) {
 		   log.error("Got exception while extracting Latitude and longitude ", exception);
@@ -108,7 +105,7 @@ public class ProfileServiceImpl implements ProfileService{
         ZipCodeResponse zipCodeResponse = this.zipcodeRestAPI.getAddressDetails(zipCode);
         double latitude = new BigDecimal(zipCodeResponse.getPlaces().get(0).getLatitude()).doubleValue();
         double longitude = new BigDecimal(zipCodeResponse.getPlaces().get(0).getLongitude()).doubleValue();
-        double[] location = {latitude,longitude};
+        double[] location = {longitude, latitude};
         return this.userDao.getSearchResults(location,distance);
     }
 

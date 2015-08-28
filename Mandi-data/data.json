@@ -13,10 +13,11 @@
 						"city" : "Franklin",
 						"state" : "TN",
 						"zipCode" : "37064",
-						"location" : { 
-						                 "lat": 35.9310461,
-                                         "lng": -86.8556036
-                                      },
+						"location" : [ 
+						                 
+                                       -86.8556036,
+                                        35.9310461
+                                      ],
 						"type" : "Home"
                      }
                   ]
@@ -36,10 +37,11 @@
 						"city" : "Franklin",
 						"state" : "TN",
 						"zipCode" : "37067",
-						"location" : { 
-						                 "lat": 35.9462032,
-                                         "lng": -86.83684400000001
-                                      },
+						"location" : [ 
+						                 
+                                         -86.83684400000001,
+                                         35.9462032
+                                      ],
 						"type" : "Home"
                      }
                   ]
