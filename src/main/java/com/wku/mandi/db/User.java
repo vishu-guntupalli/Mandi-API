@@ -17,6 +17,9 @@ public class User {
 	private String lastName;
 	private String sex;
 	private List<Address> addresses;
+	private List<Inventory> inventory;
+	private List<Transaction> transactions;
+	private List<String> pendingTransactions;
 
 	public String getUserId() {
 		return userId;
@@ -74,6 +77,30 @@ public class User {
 
 	public void setAddresses(List<Address> addresses) {
 		this.addresses = addresses;
+	}
+
+	public List<Inventory> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(List<Inventory> inventory) {
+		this.inventory = inventory;
+	}
+
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
+	}
+
+	public List<String> getPendingTransactions() {
+		return pendingTransactions;
+	}
+
+	public void setPendingTransactions(List<String> pendingTransactions) {
+		this.pendingTransactions = pendingTransactions;
 	}
 
 }
