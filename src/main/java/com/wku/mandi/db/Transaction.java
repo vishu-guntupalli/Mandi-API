@@ -2,6 +2,8 @@ package com.wku.mandi.db;
 
 import java.util.Date;
 
+import com.wku.mandi.db.MandiConstants.TransactionStatus;
+
 public class Transaction {
 	
 	private String sellerId;
@@ -9,6 +11,7 @@ public class Transaction {
 	private String inventoryId;
 	private Date transactionDate;
 	private int quantity;
+	private TransactionStatus status;
 
 	public String getSellerId() {
 		return sellerId;
@@ -39,6 +42,12 @@ public class Transaction {
 	}
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	public TransactionStatus getStatus() {
+		return status;
+	}
+	public void setStatus(TransactionStatus status) {
+		this.status = status;
 	}
 
 }

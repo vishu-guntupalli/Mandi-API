@@ -2,24 +2,20 @@ package com.wku.mandi.db;
 
 import java.util.Date;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 public class Inventory {
 	
 	@Id
-	private String inventoryId;
+	private ObjectId inventoryId;
 	private String name;
 	private String description;
 	private int quantity;
 	private String unit;
 	private Date expiryDate;
+	private boolean isBought;
 	
-	public String getInventoryId() {
-		return inventoryId;
-	}
-	public void setInventoryId(String inventoryId) {
-		this.inventoryId = inventoryId;
-	}
 	public String getName() {
 		return name;
 	}
@@ -49,6 +45,18 @@ public class Inventory {
 	}
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
+	}
+	public boolean isBought() {
+		return isBought;
+	}
+	public void setBought(boolean isBought) {
+		this.isBought = isBought;
+	}
+	public ObjectId getInventoryId() {
+		return inventoryId;
+	}
+	public void setInventoryId(ObjectId inventoryId) {
+		this.inventoryId = inventoryId;
 	}
 
 }

@@ -2,8 +2,10 @@ package com.wku.mandi.dao;
 
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,6 +19,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.wku.mandi.SpringBoot;
 import com.wku.mandi.dao.impl.UserDaoImpl;
 import com.wku.mandi.db.Address;
+import com.wku.mandi.db.Inventory;
 import com.wku.mandi.db.User;
 
 
@@ -42,6 +45,7 @@ public class TestUserDaoImpl {
 		fakeUser.setUserId(JOHN_DOE);
 		
 		injectHomeAddress();
+		injectInventory();
 		
 		userDaoImpl.saveUser(fakeUser);
 	}
@@ -105,6 +109,21 @@ public class TestUserDaoImpl {
 		homeAddress.setType("Home");
 		
 		fakeUser.setAddresses(Arrays.asList(homeAddress));
+	}
+	
+	private void injectInventory() {
+		Inventory inventory = new Inventory();
+		ObjectId objectId = new ObjectId().get();
+		
+		inventory.setInventoryId(objectId);
+		inventory.setBought(false);
+		inventory.setName("Tomato");
+		inventory.setDescription("Big Red Tomatoes");
+		inventory.setExpiryDate(new Date());
+		inventory.setQuantity(10);
+		inventory.setUnit("Singles");
+		
+		fakeUser.setInventory(Arrays.asList(inventory));
 	}
 	
 	private void compareAddressData(Address actualAddress) {

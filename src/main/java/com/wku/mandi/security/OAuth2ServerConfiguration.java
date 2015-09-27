@@ -1,6 +1,6 @@
 package com.wku.mandi.security;
 
-import com.wku.mandi.db.RoleConstant;
+import com.wku.mandi.db.MandiConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -43,7 +43,7 @@ public class OAuth2ServerConfiguration {
             http
                     .authorizeRequests()
                     .antMatchers("/","/public/**").permitAll()
-                    .antMatchers("/profile/**").hasAuthority(RoleConstant.USER)
+                    .antMatchers("/profile/**").hasAuthority(MandiConstants.USER)
                     .anyRequest().fullyAuthenticated()
                     .and()
                     .rememberMe();
@@ -84,7 +84,7 @@ public class OAuth2ServerConfiguration {
                     .inMemory()
                     .withClient("clientapp")
                     .authorizedGrantTypes("password")
-                    .authorities(RoleConstant.USER)
+                    .authorities(MandiConstants.USER)
                     .scopes("read", "write")
                     .resourceIds(RESOURCE_ID)
                     .secret("123456");

@@ -1,7 +1,7 @@
 package com.wku.mandi.controller;
 
 import com.wku.mandi.db.Role;
-import com.wku.mandi.db.RoleConstant;
+import com.wku.mandi.db.MandiConstants;
 import com.wku.mandi.db.User;
 import com.wku.mandi.exception.UserNotFoundException;
 import com.wku.mandi.service.ProfileService;
@@ -39,7 +39,7 @@ public class ProfileController {
     public @ResponseBody User save(@RequestBody User user) {
         if (user != null) {
             List<Role> roles = new ArrayList<>();
-            roles.add(new Role(RoleConstant.USER));
+            roles.add(new Role(MandiConstants.USER));
             user.setRoles(roles);
             profileService.saveUser(user);
         }
