@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 public class Inventory {
 	
 	@Id
-	private ObjectId inventoryId;
+	private String inventoryId;
 	private String name;
 	private String description;
 	private int quantity;
@@ -52,11 +52,12 @@ public class Inventory {
 	public void setBought(boolean isBought) {
 		this.isBought = isBought;
 	}
-	public ObjectId getInventoryId() {
+	public String getInventoryId() {
 		return inventoryId;
 	}
-	public void setInventoryId(ObjectId inventoryId) {
+	public void setInventoryId(String inventoryId) {
 		this.inventoryId = inventoryId;
 	}
+	
 
 }

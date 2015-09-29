@@ -31,7 +31,6 @@ public class TestUserDaoImpl {
 	@Autowired
 	private UserDaoImpl userDaoImpl;
 
-	
 	private User fakeUser = new User();
 	private Address homeAddress = new Address();
 	
@@ -52,7 +51,7 @@ public class TestUserDaoImpl {
 	
 	@After
 	public void tearDown() {
-		userDaoImpl.deleteUser(JOHN_DOE);
+		//userDaoImpl.deleteUser(JOHN_DOE);
 	}
 	
 	@Test
@@ -113,9 +112,8 @@ public class TestUserDaoImpl {
 	
 	private void injectInventory() {
 		Inventory inventory = new Inventory();
-		ObjectId objectId = new ObjectId().get();
 		
-		inventory.setInventoryId(objectId);
+		inventory.setInventoryId(new ObjectId().toString());		
 		inventory.setBought(false);
 		inventory.setName("Tomato");
 		inventory.setDescription("Big Red Tomatoes");
