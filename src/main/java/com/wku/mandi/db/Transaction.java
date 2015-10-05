@@ -2,10 +2,14 @@ package com.wku.mandi.db;
 
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
+
 import com.wku.mandi.db.MandiConstants.TransactionStatus;
 
 public class Transaction {
 	
+	@Id
+	private String transactionId;
 	private String sellerId;
 	private String buyerId;
 	private String inventoryId;
@@ -48,6 +52,12 @@ public class Transaction {
 	}
 	public void setStatus(TransactionStatus status) {
 		this.status = status;
+	}
+	public String getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
 	}
 
 }
