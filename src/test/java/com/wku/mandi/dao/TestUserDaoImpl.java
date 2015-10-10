@@ -29,7 +29,7 @@ public class TestUserDaoImpl extends CommonTestParent {
 
 	@After
 	public void tearDown() {
-		userDaoImpl.deleteUser(JOHN_DOE);
+		super.tearDown();
 	}
 	
 	@Test

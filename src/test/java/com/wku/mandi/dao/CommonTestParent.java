@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,11 @@ public class CommonTestParent {
 		injectInventory();
 		
 		userDaoImpl.saveUser(fakeUser);
+	}
+	
+	@After
+	public void tearDown() {
+		userDaoImpl.deleteUser(JOHN_DOE);
 	}
 	
 	private void injectHomeAddress() {

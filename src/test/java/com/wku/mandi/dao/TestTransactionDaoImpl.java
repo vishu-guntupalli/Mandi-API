@@ -1,8 +1,10 @@
 package com.wku.mandi.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,24 +41,21 @@ public class TestTransactionDaoImpl extends CommonTestParent{
 		super.setUp();
 	}
 	
-	@Test
-	public void testCreateInitialTransaction() {
-		Transaction transaction = new Transaction();
-		transaction.setTransactionId(ObjectId.get().toString());
-		transaction.setBuyerId("JOHN_DOE");
-		transaction.setSellerId("JEFF_DOE");
-		transaction.setQuantity(2);
-		transaction.setInventoryId(ObjectId.get().toString());
-		transaction.setStatus(TransactionStatus.PENDING);
-		transaction.setTransactionDate(new Date());
-		
-		boolean result = transactionDaoImpl.createInitialTransaction(transaction);
-		
-		Assert.assertTrue(result);
-		
-		mongoTemplate.findAndRemove(Query.query(Criteria.where("_id").is(transaction.getTransactionId())), Transaction.class);
+	@After
+	public void tearDown() {
+		super.tearDown();
 	}
 	
+	@Test
+	public void testCreateInitialTransaction() {
+		Transaction transaction = createSampleTransaction();
+		
+		boolean result = transactionDaoImpl.createInitialTransaction(transaction);
+		Assert.assertTrue(result);
+		
+		removeSampleTransaction(transaction);
+	}
+
 	@Test
 	public void testDeductFromSeller(){
 		boolean result = transactionDaoImpl.deductFromSeller(JOHN_DOE, fakeUser.getInventory().get(0).getInventoryId(), 5);
@@ -89,6 +88,67 @@ public class TestTransactionDaoImpl extends CommonTestParent{
         User user = userDaoImpl.findUserById(JOHN_DOE);
         
         Assert.assertEquals(2, user.getInventory().size());
+	}
+	
+	@Test
+	public void testAddPendingTransactionToUser() {
+		User user = userDaoImpl.findUserById(JOHN_DOE);
+		
+		Assert.assertNull(user.getPendingTransactions());
+		
+		boolean result = transactionDaoImpl.addPendingTransactionToUser(JOHN_DOE, "1234");
+		Assert.assertTrue(result);
+		
+		user = userDaoImpl.findUserById(JOHN_DOE);
+		
+		Assert.assertNotNull(user.getPendingTransactions());
+		Assert.assertEquals("1234", user.getPendingTransactions().get(0));
+	}
+	
+	@Test
+	public void testRemovePendingTransactionFromUser() {
+		boolean result = transactionDaoImpl.addPendingTransactionToUser(JOHN_DOE, "1234");
+		Assert.assertTrue(result);
+		
+		result = transactionDaoImpl.removePendingTransactionFromUser(JOHN_DOE, "1234");
+		Assert.assertTrue(result);
+		
+		User user = userDaoImpl.findUserById(JOHN_DOE);
+		Assert.assertEquals(0, user.getPendingTransactions().size());
+	}
+	
+	@Test
+	public void testSetInitialTransactionToComplete() {
+		Transaction transaction = createSampleTransaction();
+		
+		boolean result = transactionDaoImpl.createInitialTransaction(transaction);
+		Assert.assertTrue(result);
+		
+		result = transactionDaoImpl.setInitialTransactionToComplete(transaction.getTransactionId());
+		Assert.assertTrue(result);
+		
+		List<Transaction> actualTransaction = mongoTemplate.find(Query.query(Criteria.where("_id").is(transaction.getTransactionId())), Transaction.class);
+		Assert.assertNotNull(actualTransaction);
+		Assert.assertEquals(1, actualTransaction.size());
+		Assert.assertEquals(TransactionStatus.COMPLETED, actualTransaction.get(0).getStatus());
+		
+		removeSampleTransaction(transaction);
+	}
+	
+	private Transaction createSampleTransaction() {
+		Transaction transaction = new Transaction();
+		transaction.setTransactionId(ObjectId.get().toString());
+		transaction.setBuyerId("JOHN_DOE");
+		transaction.setSellerId("JEFF_DOE");
+		transaction.setQuantity(2);
+		transaction.setInventoryId(ObjectId.get().toString());
+		transaction.setStatus(TransactionStatus.PENDING);
+		transaction.setTransactionDate(new Date());
+		return transaction;
+	}
+	
+	private void removeSampleTransaction(Transaction transaction) {
+		mongoTemplate.findAndRemove(Query.query(Criteria.where("_id").is(transaction.getTransactionId())), Transaction.class);
 	}
 	
 

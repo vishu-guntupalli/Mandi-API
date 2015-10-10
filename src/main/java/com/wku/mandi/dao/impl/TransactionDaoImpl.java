@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.mongodb.MongoException;
 import com.wku.mandi.dao.TransactionDao;
 import com.wku.mandi.db.Inventory;
+import com.wku.mandi.db.MandiConstants.TransactionStatus;
 import com.wku.mandi.db.Transaction;
 import com.wku.mandi.db.User;
 
@@ -60,6 +61,57 @@ public class TransactionDaoImpl implements TransactionDao{
 		
 		try{
 			mongoTemplate.updateFirst(query, update, User.class);
+		}
+		catch(MongoException exception) {
+			log.error("An exception occured ", exception);
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean addPendingTransactionToUser(String userId, String transactionId) {
+		Update update = new Update();
+		update.push("pendingTransactions", transactionId);
+		
+		Query query = new Query(Criteria.where("_id").is(userId));
+		
+		try {
+			mongoTemplate.updateFirst(query, update, User.class);
+		}
+		catch(MongoException exception) {
+			log.error("An exception occured ", exception);
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean removePendingTransactionFromUser(String userId, String transactionId) {
+		Update update = new Update();
+		update.pull("pendingTransactions", transactionId);
+        
+		Query query = new Query(Criteria.where("_id").is(userId));
+		
+		try {
+			mongoTemplate.findAndModify(query, update, User.class);
+		}
+		catch(MongoException exception) {
+			log.error("An exception occured ", exception);
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean setInitialTransactionToComplete(String transactionId) {
+		Update update = new Update();
+		update.set("status", TransactionStatus.COMPLETED);
+		
+		Query query = new Query(Criteria.where("_id").is(transactionId));
+		
+		try {
+			mongoTemplate.findAndModify(query, update, Transaction.class);
 		}
 		catch(MongoException exception) {
 			log.error("An exception occured ", exception);
