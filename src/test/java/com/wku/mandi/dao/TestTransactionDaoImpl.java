@@ -58,7 +58,7 @@ public class TestTransactionDaoImpl extends CommonTestParent{
 
 	@Test
 	public void testDeductFromSeller(){
-		boolean result = transactionDaoImpl.deductFromSeller(JOHN_DOE, fakeUser.getInventory().get(0).getInventoryId(), 5);
+		boolean result = transactionDaoImpl.deductOrAddToSeller(JOHN_DOE, fakeUser.getInventory().get(0).getInventoryId(), -5);
 		
 		Assert.assertTrue(result);
 		
@@ -124,7 +124,7 @@ public class TestTransactionDaoImpl extends CommonTestParent{
 		boolean result = transactionDaoImpl.createInitialTransaction(transaction);
 		Assert.assertTrue(result);
 		
-		result = transactionDaoImpl.setInitialTransactionToComplete(transaction.getTransactionId());
+		result = transactionDaoImpl.changeTransactionStatus(transaction.getTransactionId(), TransactionStatus.COMPLETED);
 		Assert.assertTrue(result);
 		
 		List<Transaction> actualTransaction = mongoTemplate.find(Query.query(Criteria.where("_id").is(transaction.getTransactionId())), Transaction.class);
@@ -133,6 +133,14 @@ public class TestTransactionDaoImpl extends CommonTestParent{
 		Assert.assertEquals(TransactionStatus.COMPLETED, actualTransaction.get(0).getStatus());
 		
 		removeSampleTransaction(transaction);
+	}
+	
+	@Test
+	public void testFindInventoryInSeller() {
+		Inventory inventory = transactionDaoImpl.findInventoryInSeller(JOHN_DOE, fakeUser.getInventory().get(0).getInventoryId());
+		
+		Assert.assertNotNull(inventory);
+		compareInventory(inventory);
 	}
 	
 	private Transaction createSampleTransaction() {

@@ -11,6 +11,7 @@ public interface MandiConstants {
     public enum TransactionStatus {
     	INITIATED,
     	PENDING,
-    	COMPLETED;
+    	COMPLETED,
+    	FAILED;
     }
 }

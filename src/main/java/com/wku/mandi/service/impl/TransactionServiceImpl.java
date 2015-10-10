@@ -1,8 +1,12 @@
 package com.wku.mandi.service.impl;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.wku.mandi.dao.impl.TransactionDaoImpl;
+import com.wku.mandi.db.Inventory;
+import com.wku.mandi.db.MandiConstants.TransactionStatus;
+import com.wku.mandi.db.Transaction;
 import com.wku.mandi.service.TransactionService;
 
 public class TransactionServiceImpl implements TransactionService{
@@ -11,10 +15,108 @@ public class TransactionServiceImpl implements TransactionService{
 	private TransactionDaoImpl transactionDaoImpl;
 	
 	@Override
-	public String buyItem(String sellerId, String buyerId, String inventoryId) {
+	public String buyItem(String sellerId, String buyerId, String inventoryId, int quantity) {
 		
+		Transaction transaction = createInitialTransactionObject(sellerId, buyerId, inventoryId, quantity);
+		String transactionID = transaction.getTransactionId();
 		
-		return null;
+		boolean createInitialTransactionSuccessful = createInitialTransaction(transaction);
+		if((createInitialTransactionSuccessful))
+		{
+			boolean addPendingTransactionToSellerSuccessful = addPendingTransactionToSeller(sellerId, transactionID);
+			boolean addPendingTransactionToBuyerSuccessful = addPendingTransactionToBuyer(buyerId, transactionID);
+			
+			if(addPendingTransactionToSellerSuccessful && addPendingTransactionToBuyerSuccessful) {
+				
+				boolean deductFromSellerSuccessful = deductFromSeller(sellerId, inventoryId, quantity);
+				if(deductFromSellerSuccessful) {
+						
+					boolean addToBuyerSucccessful = addToBuyer(buyerId, inventoryId);
+					if(addToBuyerSucccessful) {
+						
+						removePendingTransactionFromSellerAndBuyer(sellerId, buyerId, transactionID);
+						setTransactionStatusAsCompleted(transactionID);
+						return transactionID;
+					}
+					else {
+						
+						rollBackSeller(sellerId, inventoryId, quantity);
+						removePendingTransactionFromSellerAndBuyer(buyerId, sellerId, transactionID);
+						setTransactionStatusAsFailed(transactionID);
+						return null;
+					}
+				}
+				else {
+					
+					removePendingTransactionFromSellerAndBuyer(buyerId, sellerId, transactionID);
+					setTransactionStatusAsFailed(transactionID);
+					return null;
+				}
+			}
+			else {
+				
+				setTransactionStatusAsFailed(transactionID);
+				return null;
+			}
+		}
+		else {
+			return null;
+		}
+	}
+
+	private void setTransactionStatusAsCompleted(String transactionID) {
+		transactionDaoImpl.changeTransactionStatus(transactionID, TransactionStatus.COMPLETED);
+	}
+
+	private void setTransactionStatusAsFailed(String transactionID) {
+		transactionDaoImpl.changeTransactionStatus(transactionID, TransactionStatus.FAILED);
+	}
+
+	private void removePendingTransactionFromSellerAndBuyer(String sellerId,
+			String buyerId, String transactionID) {
+		transactionDaoImpl.removePendingTransactionFromUser(sellerId, transactionID);
+		transactionDaoImpl.removePendingTransactionFromUser(buyerId, transactionID);
+	}
+
+	private boolean addToBuyer(String buyerId, String inventoryId) {
+		Inventory inventory = transactionDaoImpl.findInventoryInSeller(buyerId, inventoryId);
+		if(inventory != null) {
+		   return transactionDaoImpl.addToBuyer(buyerId, inventory);
+		}
+		else
+			return false;
+	}
+
+	private boolean deductFromSeller(String sellerId, String inventoryId, int quantity) {
+		return transactionDaoImpl.deductOrAddToSeller(sellerId, inventoryId, -quantity);
+	}
+	
+	private boolean rollBackSeller(String sellerId, String inventoryId, int quantity) {
+		return transactionDaoImpl.deductOrAddToSeller(sellerId, inventoryId, quantity);
+	}
+
+	private boolean addPendingTransactionToSeller(String sellerId, String transactionId) {
+		return transactionDaoImpl.addPendingTransactionToUser(sellerId, transactionId );
+	}
+	
+	private boolean addPendingTransactionToBuyer(String buyerId, String transactionId) {
+		return transactionDaoImpl.addPendingTransactionToUser(buyerId, transactionId );
+	}
+
+	private boolean createInitialTransaction(Transaction transaction) {
+		return transactionDaoImpl.createInitialTransaction(transaction);
+	}
+
+	private Transaction createInitialTransactionObject(String sellerId, String buyerId, String inventoryId, int quantity) {
+		Transaction transaction = new Transaction();
+		transaction.setBuyerId(buyerId);
+		transaction.setSellerId(sellerId);
+		transaction.setInventoryId(inventoryId);
+		transaction.setTransactionId(ObjectId.get().toString());
+		transaction.setQuantity(quantity);
+		transaction.setStatus(TransactionStatus.PENDING);
+		
+		return transaction;
 	}
 
 }

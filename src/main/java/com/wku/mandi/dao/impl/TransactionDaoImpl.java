@@ -1,5 +1,7 @@
 package com.wku.mandi.dao.impl;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bson.types.ObjectId;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.mongodb.MongoException;
 import com.wku.mandi.dao.TransactionDao;
 import com.wku.mandi.db.Inventory;
-import com.wku.mandi.db.MandiConstants.TransactionStatus;
+import com.wku.mandi.db.MandiConstants;
 import com.wku.mandi.db.Transaction;
 import com.wku.mandi.db.User;
 
@@ -38,11 +40,11 @@ public class TransactionDaoImpl implements TransactionDao{
 	}
 
 	@Override
-	public boolean deductFromSeller(String sellerId, String inventoryId, int quantity) {
+	public boolean deductOrAddToSeller(String sellerId, String inventoryId, int quantity) {
 		Query query = new Query(new Criteria().andOperator(Criteria.where("inventory._id").is(new ObjectId(inventoryId)), Criteria.where("_id").is(sellerId)));
 		try{
 			Update update = new Update();
-			update.inc("inventory.$.quantity", -quantity);
+			update.inc("inventory.$.quantity", quantity);
 			mongoTemplate.findAndModify(query, update, User.class);
 		}
 		catch(MongoException exception) {
@@ -104,9 +106,9 @@ public class TransactionDaoImpl implements TransactionDao{
 	}
 
 	@Override
-	public boolean setInitialTransactionToComplete(String transactionId) {
+	public boolean changeTransactionStatus(String transactionId, MandiConstants.TransactionStatus status) {
 		Update update = new Update();
-		update.set("status", TransactionStatus.COMPLETED);
+		update.set("status", status);
 		
 		Query query = new Query(Criteria.where("_id").is(transactionId));
 		
@@ -118,6 +120,31 @@ public class TransactionDaoImpl implements TransactionDao{
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public Inventory findInventoryInSeller(String sellerId, String inventoryId) {
+		Query query = new Query(new Criteria().andOperator(Criteria.where("inventory._id").is(new ObjectId(inventoryId)), Criteria.where("_id").is(sellerId)));
+		
+		try {
+			User user = mongoTemplate.findOne(query, User.class);
+			
+			Inventory inventory = (Inventory) CollectionUtils.find(user.getInventory(), new Predicate() {
+				@Override
+				public boolean evaluate(Object arg) {
+					Inventory inv = (Inventory) arg;
+					if(inv.getInventoryId().equals(inventoryId))
+					   return true;
+					else
+					   return false;
+				}
+			});
+			return inventory;
+		}
+		catch(MongoException exception) {
+			log.error("An exception occured ", exception);
+		}
+		return null;
 	}
 
 	

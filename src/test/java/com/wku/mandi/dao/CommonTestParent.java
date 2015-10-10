@@ -18,6 +18,7 @@ public class CommonTestParent {
 	
 	protected User fakeUser = new User();
 	protected Address homeAddress = new Address();
+	protected Inventory inventory = new Inventory();
 	
 	protected static final String JOHN_DOE = "JohnDoe";
 	
@@ -39,7 +40,7 @@ public class CommonTestParent {
 	
 	@After
 	public void tearDown() {
-		userDaoImpl.deleteUser(JOHN_DOE);
+		//userDaoImpl.deleteUser(JOHN_DOE);
 	}
 	
 	private void injectHomeAddress() {
@@ -57,7 +58,6 @@ public class CommonTestParent {
 	}
 	
 	private void injectInventory() {
-		Inventory inventory = new Inventory();
 		
 		inventory.setInventoryId(new ObjectId().toString());		
 		inventory.setBought(false);
@@ -87,6 +87,16 @@ public class CommonTestParent {
 		Assert.assertEquals(fakeUser.getUserId(), actualuser.getUserId());
 		Assert.assertNotNull(actualuser.getAddresses());
 		Assert.assertEquals(1, actualuser.getAddresses().size());
+	}
+	
+	protected void compareInventory(Inventory actualInventory) {
+		Assert.assertEquals(inventory.getInventoryId(), actualInventory.getInventoryId());
+		Assert.assertEquals(inventory.getDescription(), actualInventory.getDescription());
+		Assert.assertEquals(inventory.getName(), actualInventory.getName());
+		Assert.assertEquals(inventory.getUnit(), actualInventory.getUnit());
+		Assert.assertEquals(inventory.getExpiryDate(), actualInventory.getExpiryDate());
+		Assert.assertEquals(inventory.getQuantity(), actualInventory.getQuantity());
+		
 	}
 
 }
