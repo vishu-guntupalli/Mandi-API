@@ -4,15 +4,20 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.wku.mandi.dao.impl.TransactionDaoImpl;
+import com.wku.mandi.dao.impl.UserDaoImpl;
 import com.wku.mandi.db.Inventory;
 import com.wku.mandi.db.MandiConstants.TransactionStatus;
 import com.wku.mandi.db.Transaction;
+import com.wku.mandi.db.User;
 import com.wku.mandi.service.TransactionService;
 
 public class TransactionServiceImpl implements TransactionService{
 	
 	@Autowired
 	private TransactionDaoImpl transactionDaoImpl;
+	
+	@Autowired
+	private UserDaoImpl userDaoImpl;
 	
 	@Override
 	public String buyItem(String sellerId, String buyerId, String inventoryId, int quantity) {
@@ -72,8 +77,7 @@ public class TransactionServiceImpl implements TransactionService{
 		transactionDaoImpl.changeTransactionStatus(transactionID, TransactionStatus.FAILED);
 	}
 
-	private void removePendingTransactionFromSellerAndBuyer(String sellerId,
-			String buyerId, String transactionID) {
+	private void removePendingTransactionFromSellerAndBuyer(String sellerId, String buyerId, String transactionID) {
 		transactionDaoImpl.removePendingTransactionFromUser(sellerId, transactionID);
 		transactionDaoImpl.removePendingTransactionFromUser(buyerId, transactionID);
 	}
@@ -96,13 +100,38 @@ public class TransactionServiceImpl implements TransactionService{
 	}
 
 	private boolean addPendingTransactionToSeller(String sellerId, String transactionId) {
-		return transactionDaoImpl.addPendingTransactionToUser(sellerId, transactionId );
+		if(noCurrentPendingTransactions(sellerId)) {
+			return transactionDaoImpl.addPendingTransactionToUser(sellerId, transactionId );
+		}
+		else {
+			return false;
+		}
 	}
 	
 	private boolean addPendingTransactionToBuyer(String buyerId, String transactionId) {
-		return transactionDaoImpl.addPendingTransactionToUser(buyerId, transactionId );
+		if(noCurrentPendingTransactions(buyerId)) {
+			return transactionDaoImpl.addPendingTransactionToUser(buyerId, transactionId );
+		}
+		else {
+			return false;
+		}
 	}
 
+	private boolean noCurrentPendingTransactions(String userId) {
+		User user = userDaoImpl.findUserById(userId);
+		if ((user.getPendingTransactions() != null)) {
+			if((user.getPendingTransactions().size() == 0)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return true;
+		}
+	}
+	
 	private boolean createInitialTransaction(Transaction transaction) {
 		return transactionDaoImpl.createInitialTransaction(transaction);
 	}
