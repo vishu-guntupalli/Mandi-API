@@ -18,6 +18,10 @@ public interface AbstractController {
     public static final String PROFILE_DELETE_URL = PROFILE_URL+"/{id}";
     public static final String PROFILE_FETCH_URL = PROFILE_URL+"/{id}";
     public static final String SEARCH_PROFILE_URL = PROFILE_URL+"/search";
+    
+    /* Transaction related URL's*/
+    public static String TRANSACTION_URL = "/transaction";
+    public static String BUY_ITEM_URL = TRANSACTION_URL+"/buyitem";
 
 
 }
