@@ -1,6 +1,7 @@
 package com.wku.mandi.service;
 
 import com.wku.mandi.db.User;
+import com.wku.mandi.db.Vault;
 import com.wku.mandi.rest.response.ZipCodeResponse;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface ProfileService {
     public List<User> findUsersWithNameLike(String nameLike);
 
     public void saveUser(User user);
+    
+    public boolean saveRegistrationInfo(Vault vault);
 
     public void updateUser(User user);
 

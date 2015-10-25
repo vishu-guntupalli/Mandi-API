@@ -3,6 +3,8 @@ package com.wku.mandi.dao.impl;
 import com.wku.mandi.dao.UserDao;
 import com.wku.mandi.db.Address;
 import com.wku.mandi.db.User;
+import com.wku.mandi.db.Vault;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,17 @@ public class UserDaoImpl implements UserDao{
 	public void saveUser(User user) {
 		log.debug("Saving the user "+user);
 		mongoTemplate.save(user);
+	}
+	
+	@Override
+	public boolean saveRegistraionInfo(Vault vault) {
+		try {
+			mongoTemplate.save(vault);
+		}
+		catch(Exception e) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

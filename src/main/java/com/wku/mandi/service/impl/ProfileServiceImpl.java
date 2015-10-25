@@ -3,6 +3,7 @@ package com.wku.mandi.service.impl;
 import com.wku.mandi.dao.UserDao;
 import com.wku.mandi.db.Address;
 import com.wku.mandi.db.User;
+import com.wku.mandi.db.Vault;
 import com.wku.mandi.rest.GeographicalAPI;
 import com.wku.mandi.rest.ZipcodeRestAPI;
 import com.wku.mandi.rest.response.GeospatialAPIResponse;
@@ -83,6 +84,11 @@ public class ProfileServiceImpl implements ProfileService{
 		   log.error("Got exception while extracting Latitude and longitude ", exception);
 	   }
 	}
+	
+	@Override
+	public boolean saveRegistrationInfo(Vault vault) {
+		return userDao.saveRegistraionInfo(vault);
+	}
 
     @Override
     public void updateUser(User user) {
@@ -108,6 +114,5 @@ public class ProfileServiceImpl implements ProfileService{
         double[] location = {longitude, latitude};
         return this.userDao.getSearchResults(location,distance);
     }
-
 
 }
