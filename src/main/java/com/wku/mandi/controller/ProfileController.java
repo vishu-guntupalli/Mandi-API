@@ -1,60 +1,71 @@
 package com.wku.mandi.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.wku.mandi.db.Role;
+import com.wku.mandi.db.MandiConstants;
 import com.wku.mandi.db.User;
-import com.wku.mandi.rest.response.ZipCodeResponse;
+import com.wku.mandi.db.Vault;
+import com.wku.mandi.exception.UserNotFoundException;
 import com.wku.mandi.service.ProfileService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by srujangopu on 7/5/15.
  */
 
 @RestController
-@RequestMapping("/profile")
 public class ProfileController {
-	
+
     private final ProfileService profileService;
 
     @Autowired
     ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/hello", produces={"application/json"})
-    public String getHello()
-    {
-        return "Hello World";
-    }
-
-    @RequestMapping(method=RequestMethod.GET, value = "/{id}", produces={"application/json"})
+    
+    @RequestMapping(method=RequestMethod.GET, value = AbstractController.PROFILE_FETCH_URL, consumes= MediaType.APPLICATION_JSON_VALUE,produces={"application/json"})
     public @ResponseBody User getProfile(@PathVariable String id) {
 
-        return profileService.findUserById(id);
+        User user = profileService.findUserById(id);
+        if(user == null){
+            throw new UserNotFoundException(id);
+        }
+        return user;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/save", produces={"application/json"})
-    public ResponseEntity<User> save(@RequestBody User user) {
+    @JsonView(Vault.class)
+    @RequestMapping(method = RequestMethod.POST, value = AbstractController.NEW_USER_SAVE_URL, consumes= MediaType.APPLICATION_JSON_VALUE, produces={"application/json"} )
+    public @ResponseBody boolean saveRegistrationInfo(@RequestBody Vault vault) {
+        return profileService.saveRegistrationInfo(vault);
+    }
+    
+    @RequestMapping(method = RequestMethod.POST, value = AbstractController.PROFILE_SAVE_URL, consumes= MediaType.APPLICATION_JSON_VALUE, produces={"application/json"})
+    public @ResponseBody User save(@RequestBody User user) {
         if (user != null) {
+            List<Role> roles = new ArrayList<>();
+            roles.add(new Role(MandiConstants.USER));
+            user.setRoles(roles);
             profileService.saveUser(user);
         }
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+        return user;
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}", produces={"application/json"})
-    public ResponseEntity<User> delete(@PathVariable String id) {
+    @RequestMapping(method = RequestMethod.DELETE, value = AbstractController.PROFILE_DELETE_URL, consumes= MediaType.APPLICATION_JSON_VALUE, produces={"application/json"})
+    public @ResponseBody User delete(@PathVariable String id) {
 
         User user = profileService.deleteUser(id);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return user;
     }
 
-    @RequestMapping(method=RequestMethod.GET, value = "/address/{zipCode}", produces={"application/json"})
-    public @ResponseBody ZipCodeResponse getAddressDetails(@PathVariable String zipCode) {
-
-        return profileService.getAddressDetails(zipCode);
+    @RequestMapping(method=RequestMethod.GET, value = AbstractController.SEARCH_PROFILE_URL, consumes= MediaType.APPLICATION_JSON_VALUE, produces={"application/json"})
+    public @ResponseBody
+    List<User> getSearchResults(@RequestParam(value="zipCode") String zipCode,@RequestParam(value="distance") String distance) {
+        return this.profileService.searchResults(zipCode,Integer.parseInt(distance));
     }
-
 }

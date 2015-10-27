@@ -1,5 +1,6 @@
 package com.wku.mandi.db;
 
+
 public class Address {
 	
 	private String addressLine1;
@@ -7,8 +8,7 @@ public class Address {
 	private String city;
 	private String state;
 	private String zipCode;
-	private String longitude;
-	private String latitude;
+	private double[] location;
 	private String type;
 
 	public String getAddressLine1() {
@@ -31,25 +31,17 @@ public class Address {
 		return state;
 	}
 
-	public String getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
-
-	public String getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
-
 	public void setState(String state) {
 		this.state = state;
 
+	}
+
+	public double[] getLocation() {
+		return location;
+	}
+
+	public void setLocation(double[] location) {
+		this.location = location;
 	}
 
 	public String getZipCode() {

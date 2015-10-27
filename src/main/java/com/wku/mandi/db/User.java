@@ -1,19 +1,24 @@
 package com.wku.mandi.db;
 
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document
 public class User {
 	
 	@Id
 	private String userId;
+	private String password;
+	private List<Role> roles;
 	private String firstName;
 	private String lastName;
 	private String sex;
 	private List<Address> addresses;
+	private List<Inventory> inventory;
+	private List<String> pendingTransactions;
 
 	public String getUserId() {
 		return userId;
@@ -21,6 +26,24 @@ public class User {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	@JsonIgnore
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@JsonIgnore
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	public String getFirstName() {
@@ -53,6 +76,22 @@ public class User {
 
 	public void setAddresses(List<Address> addresses) {
 		this.addresses = addresses;
+	}
+
+	public List<Inventory> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(List<Inventory> inventory) {
+		this.inventory = inventory;
+	}
+
+	public List<String> getPendingTransactions() {
+		return pendingTransactions;
+	}
+
+	public void setPendingTransactions(List<String> pendingTransactions) {
+		this.pendingTransactions = pendingTransactions;
 	}
 
 }

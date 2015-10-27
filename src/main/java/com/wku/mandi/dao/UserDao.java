@@ -1,8 +1,11 @@
 package com.wku.mandi.dao;
 
-import java.util.List;
 import com.wku.mandi.db.User;
+import com.wku.mandi.db.Vault;
+
 import org.springframework.data.repository.Repository;
+
+import java.util.List;
 
 public interface UserDao extends Repository<User, String> {
 
@@ -11,7 +14,13 @@ public interface UserDao extends Repository<User, String> {
 	public List<User> findUsersWithNameLike(String nameLike);
 
 	public void saveUser(User user);
+	
+	public boolean saveRegistraionInfo(Vault vault);
+
+	public void updateUser(User user);
 
 	public User deleteUser(String id);
+
+	public List<User> getSearchResults(double[] loc,int distance);
 
 }
