@@ -4,7 +4,8 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
-import com.wku.mandi.db.MandiConstants.TransactionStatus;
+import com.wku.mandi.MandiConstants.TransactionStatus;
+
 
 public class Transaction {
 	

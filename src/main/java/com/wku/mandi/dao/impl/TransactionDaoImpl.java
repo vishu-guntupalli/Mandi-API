@@ -13,9 +13,9 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.MongoException;
+import com.wku.mandi.MandiConstants;
 import com.wku.mandi.dao.TransactionDao;
 import com.wku.mandi.db.Inventory;
-import com.wku.mandi.db.MandiConstants;
 import com.wku.mandi.db.Transaction;
 import com.wku.mandi.db.User;
 
@@ -147,5 +147,4 @@ public class TransactionDaoImpl implements TransactionDao{
 		return null;
 	}
 
-	
 }

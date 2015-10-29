@@ -17,10 +17,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.wku.mandi.MandiConstants.TransactionStatus;
 import com.wku.mandi.SpringBoot;
 import com.wku.mandi.dao.impl.TransactionDaoImpl;
 import com.wku.mandi.db.Inventory;
-import com.wku.mandi.db.MandiConstants.TransactionStatus;
 import com.wku.mandi.db.Transaction;
 import com.wku.mandi.db.User;
 

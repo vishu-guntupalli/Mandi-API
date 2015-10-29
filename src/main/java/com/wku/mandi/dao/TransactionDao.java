@@ -1,7 +1,7 @@
 package com.wku.mandi.dao;
 
+import com.wku.mandi.MandiConstants;
 import com.wku.mandi.db.Inventory;
-import com.wku.mandi.db.MandiConstants;
 import com.wku.mandi.db.Transaction;
 
 public interface TransactionDao {

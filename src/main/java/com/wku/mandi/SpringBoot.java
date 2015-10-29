@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Created by srujangopu on 7/19/15.
@@ -23,11 +27,14 @@ public class SpringBoot {
         SpringApplication.run(SpringBoot.class, args);
     }
     
+    
     @Bean
-	public Jackson2ObjectMapperBuilder jacksonBuilder() {
-		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
-		builder.indentOutput(true);
-		builder.dateFormat(new SimpleDateFormat("yyyy-MM-dd"));
-		return builder;
-	}
+    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+   	MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
+   	ObjectMapper objectMapper = new ObjectMapper();
+   	objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+   	jsonConverter.setObjectMapper(objectMapper);
+   	return jsonConverter;
+    }
+    
 }

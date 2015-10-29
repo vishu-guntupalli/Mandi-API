@@ -4,10 +4,10 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wku.mandi.MandiConstants.TransactionStatus;
 import com.wku.mandi.dao.impl.TransactionDaoImpl;
 import com.wku.mandi.dao.impl.UserDaoImpl;
 import com.wku.mandi.db.Inventory;
-import com.wku.mandi.db.MandiConstants.TransactionStatus;
 import com.wku.mandi.db.Transaction;
 import com.wku.mandi.db.User;
 import com.wku.mandi.service.TransactionService;
