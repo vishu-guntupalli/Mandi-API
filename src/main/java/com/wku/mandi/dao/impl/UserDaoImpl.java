@@ -55,7 +55,13 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public boolean saveRegistraionInfo(Vault vault) {
 		try {
-			mongoTemplate.save(vault);
+			Query query = new Query(Criteria.where("_id").is(vault.getUserId()));
+			
+			if(mongoTemplate.findOne(query, Vault.class) != null){
+				return false;
+			}
+			else	
+			   mongoTemplate.save(vault);
 		}
 		catch(Exception e) {
 			return false;
