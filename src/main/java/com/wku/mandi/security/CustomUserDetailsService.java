@@ -2,6 +2,8 @@ package com.wku.mandi.security;
 
 import com.wku.mandi.dao.UserDao;
 import com.wku.mandi.db.User;
+import com.wku.mandi.db.Vault;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,35 +25,35 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findUserById(username);
-        if (user == null) {
+        Vault vault = userDao.getUserForLogin(username);
+        if (vault == null) {
             throw new UsernameNotFoundException(String.format("User %s does not exist!", username));
         }
-        return new UserRepositoryUserDetails(user);
+        return new UserRepositoryUserDetails(vault);
     }
 
-    private final static class UserRepositoryUserDetails extends User implements UserDetails {
+    private final static class UserRepositoryUserDetails extends Vault implements UserDetails {
 
         private static final long serialVersionUID = 1L;
 
-        private User user;
-        private UserRepositoryUserDetails(User user) {
-            this.user = user;
+        private Vault vault;
+        private UserRepositoryUserDetails(Vault vault) {
+            this.vault = vault;
         }
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            return user.getRoles();
+            return vault.getRoles();
         }
 
         @Override
         public String getUsername() {
-            return user.getUserId();
+            return vault.getUserId();
         }
 
         @Override
         public String getPassword() {
-            return user.getPassword();
+            return vault.getPassword();
         }
 
         @Override

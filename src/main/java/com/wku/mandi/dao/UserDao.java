@@ -16,6 +16,8 @@ public interface UserDao extends Repository<User, String> {
 	public void saveUser(User user);
 	
 	public boolean saveRegistraionInfo(Vault vault);
+	
+	public Vault getUserForLogin(String userid);
 
 	public void updateUser(User user);
 

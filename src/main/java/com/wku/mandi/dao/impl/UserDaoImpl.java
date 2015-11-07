@@ -1,23 +1,26 @@
 package com.wku.mandi.dao.impl;
 
-import com.wku.mandi.dao.UserDao;
-import com.wku.mandi.db.Address;
-import com.wku.mandi.db.User;
-import com.wku.mandi.db.Vault;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.*;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.GeoResults;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
+import com.wku.mandi.dao.UserDao;
+import com.wku.mandi.db.User;
+import com.wku.mandi.db.Vault;
 
 @Repository
 public class UserDaoImpl implements UserDao{
@@ -67,6 +70,15 @@ public class UserDaoImpl implements UserDao{
 			return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public Vault getUserForLogin(String userid) {
+        Query query = new Query(Criteria.where("_id").is(userid));
+		
+		log.debug("Finding the user for login by userID "+ userid);
+		Vault vault = (Vault) mongoTemplate.findOne(query, Vault.class);
+		return vault;
 	}
 
 	@Override

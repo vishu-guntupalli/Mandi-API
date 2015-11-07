@@ -1,7 +1,9 @@
 package com.wku.mandi.service.impl;
 
+import com.wku.mandi.MandiConstants;
 import com.wku.mandi.dao.UserDao;
 import com.wku.mandi.db.Address;
+import com.wku.mandi.db.Role;
 import com.wku.mandi.db.User;
 import com.wku.mandi.db.Vault;
 import com.wku.mandi.rest.GeographicalAPI;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -87,6 +90,9 @@ public class ProfileServiceImpl implements ProfileService{
 	
 	@Override
 	public boolean saveRegistrationInfo(Vault vault) {
+		if(vault.getRoles() == null) {
+			vault.setRoles(Arrays.asList(new Role(MandiConstants.USER)));
+		}
 		return userDao.saveRegistraionInfo(vault);
 	}
 
