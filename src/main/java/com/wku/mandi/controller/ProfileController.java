@@ -20,6 +20,7 @@ import com.wku.mandi.db.Role;
 import com.wku.mandi.db.User;
 import com.wku.mandi.db.Vault;
 import com.wku.mandi.exception.UserNotFoundException;
+import com.wku.mandi.rest.response.BooleanResult;
 import com.wku.mandi.service.ProfileService;
 
 /**
@@ -50,10 +51,12 @@ public class ProfileController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = MandiConstants.NEW_USER_SAVE_URL, produces={"application/json"} )
-    public @ResponseBody boolean saveRegistrationInfo(@RequestBody Vault vault) {
+    public @ResponseBody BooleanResult saveRegistrationInfo(@RequestBody Vault vault) {
     	log.debug("POST call for saving registration info called with details "+ vault);
     	
-        return profileService.saveRegistrationInfo(vault);
+    	boolean result = profileService.saveRegistrationInfo(vault);
+    	
+        return new BooleanResult(result);
     }
     
     @RequestMapping(method = RequestMethod.POST, value = MandiConstants.PROFILE_SAVE_URL, consumes= MediaType.APPLICATION_JSON_VALUE, produces={"application/json"})
